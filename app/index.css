@@ -1,0 +1,48 @@
+@import "tailwindcss";
+
+@theme {
+    --font-display: "Satoshi", "sans-serif";
+
+    --breakpoint-lg: 1024px;
+    --breakpoint-3xl: 1920px;
+
+    --color-avocado-100: oklch(0.99 0 0);
+    --color-avocado-200: oklch(0.98 0.04 113.22);
+    --color-avocado-300: oklch(0.94 0.11 115.03);
+    --color-avocado-400: oklch(0.92 0.19 114.08);
+    --color-avocado-500: oklch(0.84 0.18 117.33);
+    --color-avocado-600: oklch(0.53 0.12 118.34);
+
+    --color-primary-tint: #faf7f5;
+    --color-primary-40: #f1eae4;
+    --color-primary-60: #e1d1c2;
+    --color-primary-80: #d0b79f;
+    --color-primary-100: #bf9d7d;
+    --color-primary-120: #7b6651;
+
+    --color-success-10: #e8fee7;
+    --color-success-20: #bcfbbd;
+    --color-success-120: #299f65;
+    --color-success-100: #52dd7e;
+
+    --color-error-10: #fdecef;
+    --color-error-20: #f5ccd1;
+    --color-error-100: #da3e51;
+    --color-error-120: #c22538;
+
+    --color-info-10: #e6fbfe;
+    --color-info-20: #b1effd;
+    --color-info-100: #3badef;
+    --color-info-120: #1d66ac;
+
+    --color-neutral-bg: #140f0a;
+    --color-neutral-10: #f9f9f9;
+    --color-neutral-40: #ececec;
+    --color-neutral-60: #909090;
+    --color-neutral-80: #4b4b4b;
+
+    --ease-fluid: cubic-bezier(0.3, 0, 0, 1);
+    --ease-snappy: cubic-bezier(0.2, 0, 0, 1);
+
+    /* ... */
+}
