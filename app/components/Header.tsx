@@ -7,9 +7,11 @@ import { PropsWithChildren } from "react";
 // NOTE: temporary only
 const Header = ({ children }: PropsWithChildren) => {
     return (
-        <header className="bg-neutral-bg sticky top-0 flex justify-between px-3 py-4">
-            <img src="/logo.png" alt="享樂酒店 Logo" />
-            {children}
+        <header className="bg-neutral-bg sticky top-0 px-3 py-4">
+            <div className="container flex justify-between">
+                <img src="/logo.png" alt="享樂酒店 Logo" />
+                {children}
+            </div>
         </header>
     );
 };

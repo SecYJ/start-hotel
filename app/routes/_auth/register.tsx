@@ -12,25 +12,34 @@ import { Input } from "@/components/ui/Input";
 import { createFileRoute } from "@tanstack/react-router";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Checkbox } from "@/components/ui/Checkbox";
 
 export const Route = createFileRoute("/_auth/register")({
     component: RegisterPage,
 });
 
 const schema = z.object({
-    email: z.string(),
     username: z.string(),
+    email: z.string().email({ message: "Invalid email format" }),
+    phoneNumber: z.string(),
     password: z.string(),
+    confirmPassword: z.string(),
+    agreeTerm: z.boolean().default(false),
 });
 
 type FormValues = z.infer<typeof schema>;
 
 function RegisterPage() {
     const form = useForm<FormValues>({
+        resolver: zodResolver(schema),
         defaultValues: {
             email: "",
-            password: "",
             username: "",
+            phoneNumber: "",
+            password: "",
+            confirmPassword: "",
+            agreeTerm: false,
         },
     });
 
@@ -39,36 +48,162 @@ function RegisterPage() {
     };
 
     return (
-        <div className="mx-auto w-full max-w-[416px] space-y-4">
-            <h1 className="grid space-y-2 font-bold">
+        <div className="space-y-4">
+            {/* <h1 className="grid space-y-2 font-bold">
                 <span className="text-primary-100 text-sm">
                     享樂酒店，誠摯歡迎
                 </span>
                 <span className="text-3xl text-white">立即註冊</span>
-            </h1>
+            </h1> */}
 
             <Form {...form}>
                 <form
                     onSubmit={form.handleSubmit(onSubmit)}
-                    className="space-y-8"
+                    className="space-y-4"
                 >
                     <FormField
                         control={form.control}
                         name="username"
-                        render={({ field }) => (
+                        render={({ field, fieldState: { invalid, error } }) => (
                             <FormItem>
-                                <FormLabel>Username</FormLabel>
+                                <FormLabel className="inline-block text-white">
+                                    姓名
+                                </FormLabel>
                                 <FormControl>
-                                    <Input placeholder="shadcn" {...field} />
+                                    <Input
+                                        placeholder="請輸入姓名"
+                                        className="rounded-lg bg-white p-4"
+                                        {...field}
+                                    />
                                 </FormControl>
-                                <FormDescription>
-                                    This is your public display name.
-                                </FormDescription>
-                                <FormMessage />
+                                {invalid && (
+                                    <FormDescription className="text-error-120">
+                                        {error?.message}
+                                    </FormDescription>
+                                )}
                             </FormItem>
                         )}
                     />
-                    <Button type="submit">Submit</Button>
+                    <FormField
+                        control={form.control}
+                        name="email"
+                        render={({ field, fieldState: { invalid, error } }) => (
+                            <FormItem>
+                                <FormLabel className="inline-block text-white">
+                                    電子信箱
+                                </FormLabel>
+                                <FormControl>
+                                    <Input
+                                        placeholder="hello@exsample.com"
+                                        className="rounded-lg bg-white p-4"
+                                        {...field}
+                                    />
+                                </FormControl>
+                                {invalid && (
+                                    <FormDescription className="text-error-120">
+                                        {error?.message}
+                                    </FormDescription>
+                                )}
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name="password"
+                        render={({ field, fieldState: { invalid, error } }) => (
+                            <FormItem>
+                                <FormLabel className="inline-block text-white">
+                                    密碼
+                                </FormLabel>
+                                <FormControl>
+                                    <Input
+                                        placeholder="請輸入密碼"
+                                        className="rounded-lg bg-white p-4"
+                                        {...field}
+                                    />
+                                </FormControl>
+                                {invalid && (
+                                    <FormDescription className="text-error-120">
+                                        {error?.message}
+                                    </FormDescription>
+                                )}
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name="confirmPassword"
+                        render={({ field, fieldState: { invalid, error } }) => (
+                            <FormItem>
+                                <FormLabel className="inline-block text-white">
+                                    確認密碼
+                                </FormLabel>
+                                <FormControl>
+                                    <Input
+                                        placeholder="請再輸入一次密碼"
+                                        className="rounded-lg bg-white p-4"
+                                        {...field}
+                                    />
+                                </FormControl>
+                                {invalid && (
+                                    <FormDescription className="text-error-120">
+                                        {error?.message}
+                                    </FormDescription>
+                                )}
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name="phoneNumber"
+                        render={({ field, fieldState: { invalid, error } }) => (
+                            <FormItem>
+                                <FormLabel className="inline-block text-white">
+                                    手機號碼
+                                </FormLabel>
+                                <FormControl>
+                                    <Input
+                                        placeholder="請輸入手機號碼"
+                                        className="rounded-lg bg-white p-4"
+                                        {...field}
+                                    />
+                                </FormControl>
+                                {invalid && (
+                                    <FormDescription className="text-error-120">
+                                        {error?.message}
+                                    </FormDescription>
+                                )}
+                            </FormItem>
+                        )}
+                    />
+
+                    <FormField
+                        control={form.control}
+                        name="agreeTerm"
+                        render={({ field: { value, onChange } }) => (
+                            <FormItem>
+                                <FormControl>
+                                    <div className="flex items-center gap-2">
+                                        <Checkbox
+                                            className="size-6 bg-white"
+                                            checked={value}
+                                            onCheckedChange={onChange}
+                                        />
+                                        <FormLabel className="text-white">
+                                            我已閱讀並同意本網站個資使用規範
+                                        </FormLabel>
+                                    </div>
+                                </FormControl>
+                            </FormItem>
+                        )}
+                    />
+
+                    <Button
+                        type="submit"
+                        className="bg-neutral-40 text-neutral-60 h-14 w-full py-4"
+                    >
+                        註冊
+                    </Button>
                 </form>
             </Form>
         </div>
