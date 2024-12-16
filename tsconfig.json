@@ -1,16 +1,16 @@
 {
     "include": ["**/*.ts", "**/*.tsx"],
     "compilerOptions": {
+        // "baseUrl": ".",
+        // "allowJs": true,
+        "lib": ["DOM", "DOM.Iterable", "ES2022"],
         "jsx": "react-jsx",
         "moduleResolution": "Bundler",
         "module": "ESNext",
         "target": "ES2022",
-        "lib": ["DOM", "DOM.Iterable", "ES2022"],
         "skipLibCheck": true,
         "strictNullChecks": true,
         "strict": true,
-        "baseUrl": ".",
-        "allowJs": true,
         "paths": {
             "@/*": ["./app/*"]
         }

@@ -24,7 +24,7 @@ export default tseslint.config(
         extends: [
             js.configs.recommended,
             ...tseslint.configs.recommended,
-            unusedImport.configs,
+            // unusedImport.configs,
             eslintConfigPrettier,
             //   ...pluginQuery.configs["flat/recommended"],
             //   ...pluginRouter.configs["flat/recommended"],

@@ -20,5 +20,3 @@ yarn.lock
 /playwright-report/
 /blob-report/
 /playwright/.cache/
-
-/routeTree.gen.ts

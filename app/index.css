@@ -3,7 +3,6 @@
 @theme {
     --font-display: "Satoshi", "sans-serif";
 
-    --breakpoint-lg: 1024px;
     --breakpoint-3xl: 1920px;
 
     --color-avocado-100: oklch(0.99 0 0);
@@ -45,6 +44,11 @@
     --ease-snappy: cubic-bezier(0.2, 0, 0, 1);
 
     /* ... */
+}
+@layer base {
+    body {
+        color: var(--color-neutral-80);
+    }
 }
 
 @utility container {

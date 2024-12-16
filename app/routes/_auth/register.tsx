@@ -6,10 +6,9 @@ import {
     FormField,
     FormItem,
     FormLabel,
-    FormMessage,
 } from "@/components/ui/Form";
 import { Input } from "@/components/ui/Input";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -49,13 +48,6 @@ function RegisterPage() {
 
     return (
         <div className="space-y-4">
-            {/* <h1 className="grid space-y-2 font-bold">
-                <span className="text-primary-100 text-sm">
-                    享樂酒店，誠摯歡迎
-                </span>
-                <span className="text-3xl text-white">立即註冊</span>
-            </h1> */}
-
             <Form {...form}>
                 <form
                     onSubmit={form.handleSubmit(onSubmit)}
@@ -206,6 +198,13 @@ function RegisterPage() {
                     </Button>
                 </form>
             </Form>
+
+            <div className="flex gap-2 text-white">
+                <p>已經有會員了嗎？</p>
+                <Link to="/login" className="text-primary-100">
+                    立即登入
+                </Link>
+            </div>
         </div>
     );
 }

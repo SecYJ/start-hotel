@@ -11,6 +11,7 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as ProtectedRouteImport } from './routes/_protected/route'
 import { Route as AuthRouteImport } from './routes/_auth/route'
 import { Route as IndexImport } from './routes/index'
 import { Route as ProtectedRoomsImport } from './routes/_protected/rooms'
@@ -22,6 +23,11 @@ import { Route as ProtectedRoomsIdImport } from './routes/_protected/rooms.$id'
 import { Route as ProtectedProfileMyBookingImport } from './routes/_protected/profile.my-booking'
 
 // Create/Update Routes
+
+const ProtectedRouteRoute = ProtectedRouteImport.update({
+  id: '/_protected',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const AuthRouteRoute = AuthRouteImport.update({
   id: '/_auth',
@@ -35,21 +41,21 @@ const IndexRoute = IndexImport.update({
 } as any)
 
 const ProtectedRoomsRoute = ProtectedRoomsImport.update({
-  id: '/_protected/rooms',
+  id: '/rooms',
   path: '/rooms',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => ProtectedRouteRoute,
 } as any)
 
 const ProtectedProfileRoute = ProtectedProfileImport.update({
-  id: '/_protected/profile',
+  id: '/profile',
   path: '/profile',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => ProtectedRouteRoute,
 } as any)
 
 const ProtectedCheckoutRoute = ProtectedCheckoutImport.update({
-  id: '/_protected/checkout',
+  id: '/checkout',
   path: '/checkout',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => ProtectedRouteRoute,
 } as any)
 
 const AuthRegisterRoute = AuthRegisterImport.update({
@@ -94,6 +100,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRoute
     }
+    '/_protected': {
+      id: '/_protected'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof ProtectedRouteImport
+      parentRoute: typeof rootRoute
+    }
     '/_auth/login': {
       id: '/_auth/login'
       path: '/login'
@@ -113,21 +126,21 @@ declare module '@tanstack/react-router' {
       path: '/checkout'
       fullPath: '/checkout'
       preLoaderRoute: typeof ProtectedCheckoutImport
-      parentRoute: typeof rootRoute
+      parentRoute: typeof ProtectedRouteImport
     }
     '/_protected/profile': {
       id: '/_protected/profile'
       path: '/profile'
       fullPath: '/profile'
       preLoaderRoute: typeof ProtectedProfileImport
-      parentRoute: typeof rootRoute
+      parentRoute: typeof ProtectedRouteImport
     }
     '/_protected/rooms': {
       id: '/_protected/rooms'
       path: '/rooms'
       fullPath: '/rooms'
       preLoaderRoute: typeof ProtectedRoomsImport
-      parentRoute: typeof rootRoute
+      parentRoute: typeof ProtectedRouteImport
     }
     '/_protected/profile/my-booking': {
       id: '/_protected/profile/my-booking'
@@ -185,9 +198,25 @@ const ProtectedRoomsRouteWithChildren = ProtectedRoomsRoute._addFileChildren(
   ProtectedRoomsRouteChildren,
 )
 
+interface ProtectedRouteRouteChildren {
+  ProtectedCheckoutRoute: typeof ProtectedCheckoutRoute
+  ProtectedProfileRoute: typeof ProtectedProfileRouteWithChildren
+  ProtectedRoomsRoute: typeof ProtectedRoomsRouteWithChildren
+}
+
+const ProtectedRouteRouteChildren: ProtectedRouteRouteChildren = {
+  ProtectedCheckoutRoute: ProtectedCheckoutRoute,
+  ProtectedProfileRoute: ProtectedProfileRouteWithChildren,
+  ProtectedRoomsRoute: ProtectedRoomsRouteWithChildren,
+}
+
+const ProtectedRouteRouteWithChildren = ProtectedRouteRoute._addFileChildren(
+  ProtectedRouteRouteChildren,
+)
+
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '': typeof AuthRouteRouteWithChildren
+  '': typeof ProtectedRouteRouteWithChildren
   '/login': typeof AuthLoginRoute
   '/register': typeof AuthRegisterRoute
   '/checkout': typeof ProtectedCheckoutRoute
@@ -199,7 +228,7 @@ export interface FileRoutesByFullPath {
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '': typeof AuthRouteRouteWithChildren
+  '': typeof ProtectedRouteRouteWithChildren
   '/login': typeof AuthLoginRoute
   '/register': typeof AuthRegisterRoute
   '/checkout': typeof ProtectedCheckoutRoute
@@ -213,6 +242,7 @@ export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
   '/_auth': typeof AuthRouteRouteWithChildren
+  '/_protected': typeof ProtectedRouteRouteWithChildren
   '/_auth/login': typeof AuthLoginRoute
   '/_auth/register': typeof AuthRegisterRoute
   '/_protected/checkout': typeof ProtectedCheckoutRoute
@@ -249,6 +279,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/_auth'
+    | '/_protected'
     | '/_auth/login'
     | '/_auth/register'
     | '/_protected/checkout'
@@ -262,17 +293,13 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRouteRoute: typeof AuthRouteRouteWithChildren
-  ProtectedCheckoutRoute: typeof ProtectedCheckoutRoute
-  ProtectedProfileRoute: typeof ProtectedProfileRouteWithChildren
-  ProtectedRoomsRoute: typeof ProtectedRoomsRouteWithChildren
+  ProtectedRouteRoute: typeof ProtectedRouteRouteWithChildren
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRouteRoute: AuthRouteRouteWithChildren,
-  ProtectedCheckoutRoute: ProtectedCheckoutRoute,
-  ProtectedProfileRoute: ProtectedProfileRouteWithChildren,
-  ProtectedRoomsRoute: ProtectedRoomsRouteWithChildren,
+  ProtectedRouteRoute: ProtectedRouteRouteWithChildren,
 }
 
 export const routeTree = rootRoute
@@ -287,9 +314,7 @@ export const routeTree = rootRoute
       "children": [
         "/",
         "/_auth",
-        "/_protected/checkout",
-        "/_protected/profile",
-        "/_protected/rooms"
+        "/_protected"
       ]
     },
     "/": {
@@ -302,6 +327,14 @@ export const routeTree = rootRoute
         "/_auth/register"
       ]
     },
+    "/_protected": {
+      "filePath": "_protected/route.tsx",
+      "children": [
+        "/_protected/checkout",
+        "/_protected/profile",
+        "/_protected/rooms"
+      ]
+    },
     "/_auth/login": {
       "filePath": "_auth/login.tsx",
       "parent": "/_auth"
@@ -311,16 +344,19 @@ export const routeTree = rootRoute
       "parent": "/_auth"
     },
     "/_protected/checkout": {
-      "filePath": "_protected/checkout.tsx"
+      "filePath": "_protected/checkout.tsx",
+      "parent": "/_protected"
     },
     "/_protected/profile": {
       "filePath": "_protected/profile.tsx",
+      "parent": "/_protected",
       "children": [
         "/_protected/profile/my-booking"
       ]
     },
     "/_protected/rooms": {
       "filePath": "_protected/rooms.tsx",
+      "parent": "/_protected",
       "children": [
         "/_protected/rooms/$id"
       ]

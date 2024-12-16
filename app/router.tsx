@@ -4,7 +4,7 @@ import { routeTree } from "./routeTree.gen";
 import { routerWithQueryClient } from "@tanstack/react-router-with-query";
 import { QueryClient } from "@tanstack/react-query";
 
-export function createRouter(): ReturnType<typeof createTanStackRouter> {
+export function createRouter() {
     const queryClient = new QueryClient();
 
     return routerWithQueryClient(
@@ -12,10 +12,10 @@ export function createRouter(): ReturnType<typeof createTanStackRouter> {
             routeTree,
             context: { queryClient },
 
-            // defaultPreload: 'intent',
+            defaultPreload: "intent",
             // defaultErrorComponent: DefaultCatchBoundary,
             // defaultNotFoundComponent: () => <NotFound />,
-        }) as never,
+        }),
         queryClient,
     );
 }
