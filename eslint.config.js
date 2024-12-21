@@ -5,7 +5,6 @@ import pluginRouter from "@tanstack/eslint-plugin-router";
 import reactHooks from "eslint-plugin-react-hooks";
 import globals from "globals";
 import eslintConfigPrettier from "eslint-config-prettier";
-import unusedImport from "eslint-plugin-unused-imports";
 
 export default tseslint.config(
     {
@@ -43,6 +42,7 @@ export default tseslint.config(
         },
         rules: {
             ...reactHooks.configs.recommended.rules,
+            "react/react-in-jsx-scope": "off",
         },
     },
     {

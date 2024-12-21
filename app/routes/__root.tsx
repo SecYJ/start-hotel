@@ -1,33 +1,36 @@
 // app/routes/__root.tsx
+import Layout from "@/components/layout";
+import "@/index.css";
+import { QueryClient } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import {
     Outlet,
     ScrollRestoration,
-    createRootRoute,
+    createRootRouteWithContext,
 } from "@tanstack/react-router";
+import { TanStackRouterDevtools } from "@tanstack/router-devtools";
 import { Meta, Scripts } from "@tanstack/start";
 import type { ReactNode } from "react";
-import "@/index.css";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { TanStackRouterDevtools } from "@tanstack/router-devtools";
-import Layout from "@/components/layout";
 
-export const Route = createRootRoute({
-    head: () => ({
-        meta: [
-            {
-                charSet: "utf-8",
-            },
-            {
-                name: "viewport",
-                content: "width=device-width, initial-scale=1",
-            },
-            {
-                title: "TanStack Start Starter",
-            },
-        ],
-    }),
-    component: RootComponent,
-});
+export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
+    {
+        head: () => ({
+            meta: [
+                {
+                    charSet: "utf-8",
+                },
+                {
+                    name: "viewport",
+                    content: "width=device-width, initial-scale=1",
+                },
+                {
+                    title: "TanStack Start Starter",
+                },
+            ],
+        }),
+        component: RootComponent,
+    },
+);
 
 function RootComponent() {
     return (

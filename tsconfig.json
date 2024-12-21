@@ -10,15 +10,13 @@
         "target": "ES2022",
         "skipLibCheck": true,
         "strictNullChecks": true,
+        "esModuleInterop": true,
         "strict": true,
+        "isolatedModules": true,
+        "resolveJsonModule": true,
+        "noEmit": true,
         "paths": {
             "@/*": ["./app/*"]
         }
     }
 }
-
-// "paths": {
-//     "@/*": ["./app/*"]
-
-
-// }
