@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/Button";
+import { Checkbox } from "@/components/ui/Checkbox";
 import {
     Form,
     FormControl,
@@ -8,30 +9,21 @@ import {
     FormLabel,
 } from "@/components/ui/Form";
 import { Input } from "@/components/ui/Input";
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { createUser } from "@/db/user";
+import { RegisterFormValues, registerSchema } from "@/utils/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Checkbox } from "@/components/ui/Checkbox";
+import { useMutation } from "@tanstack/react-query";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { SubmitHandler, useForm } from "react-hook-form";
 
 export const Route = createFileRoute("/_auth/register")({
     component: RegisterPage,
 });
 
-const schema = z.object({
-    username: z.string(),
-    email: z.string().email({ message: "Invalid email format" }),
-    phoneNumber: z.string(),
-    password: z.string(),
-    confirmPassword: z.string(),
-    agreeTerm: z.boolean().default(false),
-});
-
-type FormValues = z.infer<typeof schema>;
-
 function RegisterPage() {
-    const form = useForm<FormValues>({
-        resolver: zodResolver(schema),
+    const navigate = useNavigate();
+    const form = useForm<RegisterFormValues>({
+        resolver: zodResolver(registerSchema),
         defaultValues: {
             email: "",
             username: "",
@@ -42,8 +34,37 @@ function RegisterPage() {
         },
     });
 
-    const onSubmit = (data: FormValues) => {
-        console.log("data", data);
+    const { isPending, mutate } = useMutation({
+        mutationFn: createUser,
+    });
+
+    const onSubmit: SubmitHandler<RegisterFormValues> = async (data) => {
+        mutate(
+            {
+                data,
+            },
+            {
+                onSuccess(responseData) {
+                    if (responseData.success) {
+                        localStorage.setItem("token", responseData.token);
+                        navigate({ to: "/", replace: true });
+                    }
+                },
+                onError(error) {
+                    const err = JSON.parse(error.message) as {
+                        body: {
+                            result: {
+                                success: boolean;
+                                message: string;
+                            };
+                        };
+                    };
+                    form.setError("email", {
+                        message: err.body.result.message,
+                    });
+                },
+            },
+        );
     };
 
     return (
@@ -109,6 +130,7 @@ function RegisterPage() {
                                 </FormLabel>
                                 <FormControl>
                                     <Input
+                                        type="password"
                                         placeholder="請輸入密碼"
                                         className="rounded-lg bg-white p-4"
                                         {...field}
@@ -132,6 +154,7 @@ function RegisterPage() {
                                 </FormLabel>
                                 <FormControl>
                                     <Input
+                                        type="password"
                                         placeholder="請再輸入一次密碼"
                                         className="rounded-lg bg-white p-4"
                                         {...field}
@@ -193,6 +216,7 @@ function RegisterPage() {
                     <Button
                         type="submit"
                         className="bg-neutral-40 text-neutral-60 h-14 w-full py-4"
+                        disabled={isPending}
                     >
                         註冊
                     </Button>

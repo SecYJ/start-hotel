@@ -1,15 +1,22 @@
-import { createFileRoute, Outlet, useLocation } from "@tanstack/react-router";
+import {
+    createFileRoute,
+    linkOptions,
+    Outlet,
+    useLocation,
+} from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_auth")({
-    context() {
-        return { hello: "world" };
+    beforeLoad() {
+        if (localStorage.getItem("token")) {
+            return linkOptions({ to: "/" });
+        }
     },
     component: AuthLayout,
 });
 
 function AuthLayout() {
     const location = useLocation();
-    const isLoginPage = location.pathname === "/login";
+    const isLoginPage = location.pathname === linkOptions({ to: "/login" }).to;
 
     return (
         <div className="bg-neutral-bg">
