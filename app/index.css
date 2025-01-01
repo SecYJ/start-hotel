@@ -48,6 +48,7 @@
 @layer base {
     body {
         color: var(--color-neutral-80);
+        font-weight: 700;
     }
 }
 

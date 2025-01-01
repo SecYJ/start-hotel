@@ -6,11 +6,6 @@ import {
 } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_auth")({
-    beforeLoad() {
-        if (localStorage.getItem("token")) {
-            return linkOptions({ to: "/" });
-        }
-    },
     component: AuthLayout,
 });
 
