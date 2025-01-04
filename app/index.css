@@ -45,6 +45,7 @@
 
     /* ... */
 }
+
 @layer base {
     body {
         color: var(--color-neutral-80);

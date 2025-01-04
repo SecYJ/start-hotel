@@ -1,16 +1,8 @@
 import { Button } from "@/components/ui/Button";
 import { Checkbox } from "@/components/ui/Checkbox";
-import {
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-} from "@/components/ui/Form";
 import AuthInput from "@/form/AuthInput";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useForm } from "react-hook-form";
+import { useForm } from "@tanstack/react-form";
 import { z } from "zod";
 
 export const Route = createFileRoute("/_auth/login")({
@@ -27,73 +19,90 @@ type FormValues = z.infer<typeof schema>;
 
 function LoginPage() {
     const form = useForm<FormValues>({
-        resolver: zodResolver(schema),
         defaultValues: {
             email: "",
             password: "",
             remember: true,
         },
+        validators: {
+            onSubmit: schema,
+        },
+        onSubmit: async ({ value }) => {
+            console.log(value);
+        },
     });
 
     return (
         <div className="space-y-10">
-            <Form {...form}>
-                <form className="space-y-4">
-                    <FormField
-                        control={form.control}
-                        name="email"
-                        render={({ field, fieldState }) => (
-                            <AuthInput
-                                {...field}
-                                placeholder="hello@exsample.com"
-                                error={fieldState.error?.message}
-                            />
-                        )}
-                    />
-                    <FormField
-                        control={form.control}
-                        name="password"
-                        render={({ field, fieldState }) => (
-                            <AuthInput
-                                {...field}
-                                type="password"
-                                placeholder="請輸入密碼"
-                                error={fieldState.error?.message}
-                            />
-                        )}
-                    />
-                    <FormField
-                        control={form.control}
-                        name="remember"
-                        render={({ field }) => (
-                            <div className="flex items-center justify-between">
-                                <FormItem className="flex items-center gap-2">
-                                    <FormControl>
-                                        <Checkbox
-                                            className="size-6 bg-white"
-                                            checked={field.value}
-                                            onCheckedChange={field.onChange}
-                                        />
-                                    </FormControl>
-                                    <FormLabel className="text-white">
-                                        記住帳號
-                                    </FormLabel>
-                                </FormItem>
-                                <Link
-                                    to="."
-                                    className="text-primary-100 text-sm"
-                                >
-                                    忘記密碼？
-                                </Link>
+            <form
+                onSubmit={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    void form.handleSubmit();
+                }}
+                className="space-y-4"
+            >
+                <form.Field
+                    name="email"
+                    children={(field) => (
+                        <AuthInput
+                            placeholder="hello@example.com"
+                            name={field.name}
+                            value={field.state.value}
+                            onBlur={field.handleBlur}
+                            onChange={(e) => field.handleChange(e.target.value)}
+                            error={field.state.meta.errors?.[0]?.toString()}
+                        />
+                    )}
+                />
+                <form.Field
+                    name="password"
+                    children={(field) => (
+                        <AuthInput
+                            type="password"
+                            placeholder="請輸入密碼"
+                            name={field.name}
+                            value={field.state.value}
+                            onBlur={field.handleBlur}
+                            onChange={(e) => field.handleChange(e.target.value)}
+                            error={field.state.meta.errors?.[0]?.toString()}
+                        />
+                    )}
+                />
+                <form.Field
+                    name="remember"
+                    children={(field) => (
+                        <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-2">
+                                <Checkbox
+                                    className="size-6 bg-white"
+                                    checked={field.state.value}
+                                    onCheckedChange={(checked) => {
+                                        field.handleChange(checked === true);
+                                    }}
+                                />
+                                <label className="text-white">記住帳號</label>
                             </div>
-                        )}
-                    />
-                </form>
-            </Form>
+                            <Link to="." className="text-primary-100 text-sm">
+                                忘記密碼？
+                            </Link>
+                        </div>
+                    )}
+                />
 
-            <Button className="bg-neutral-40 text-neutral-60 h-14 w-full py-4">
-                會員登入
-            </Button>
+                <form.Subscribe
+                    selector={(state) => [state.canSubmit, state.isSubmitting]}
+                    children={([canSubmit, isSubmitting]) => (
+                        <Button
+                            type="submit"
+                            className="bg-neutral-40 text-neutral-60 h-14 w-full py-4"
+                            disabled={!canSubmit || isSubmitting}
+                        >
+                            {isSubmitting ? "登入中..." : "會員登入"}
+                        </Button>
+                    )}
+                />
+            </form>
 
             <div className="flex items-center gap-2">
                 <p className="font-medium text-white">沒有會員嗎？</p>
@@ -104,3 +113,5 @@ function LoginPage() {
         </div>
     );
 }
+
+export default LoginPage;
