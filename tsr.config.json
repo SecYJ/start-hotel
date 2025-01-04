@@ -1,3 +1,4 @@
 {
-    "autoCodeSplitting": true
+    "autoCodeSplitting": true,
+    "routeFileIgnorePrefix": "@"
 }
