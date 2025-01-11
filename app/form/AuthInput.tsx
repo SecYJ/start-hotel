@@ -1,13 +1,16 @@
 import { Input } from "@/components/ui/Input";
-import { ComponentProps } from "react";
+import { ComponentProps, ReactNode } from "react";
 
-type Props = ComponentProps<"input"> & { error?: string };
+type Props = ComponentProps<"input"> & {
+    error?: string;
+    children: ReactNode;
+};
 
-const AuthInput = (props: Props) => {
+const AuthInput = ({ children, ...props }: Props) => {
     return (
         <div>
             <div className="space-y-2">
-                <label className="inline-block text-white">姓名</label>
+                <label className="inline-block text-white">{children}</label>
                 <div>
                     <Input
                         {...props}

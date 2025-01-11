@@ -15,7 +15,7 @@ function AuthLayout() {
 
     return (
         <div className="bg-neutral-bg">
-            <div className="container grid h-[calc(100vh-104px)] place-content-center lg:grid-cols-2 lg:place-content-stretch">
+            <div className="container grid h-screen place-content-center lg:grid-cols-2 lg:place-content-stretch">
                 <img
                     src="/auth-banner.jpeg"
                     className="hidden h-full object-cover lg:block"

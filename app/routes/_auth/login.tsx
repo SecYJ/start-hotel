@@ -11,8 +11,8 @@ export const Route = createFileRoute("/_auth/login")({
 
 const schema = z.object({
     email: z.string().email(),
-    password: z.string(),
-    remember: z.boolean().optional(),
+    password: z.string().min(6, "密碼至少需要6個字元"),
+    remember: z.boolean(),
 });
 
 type FormValues = z.infer<typeof schema>;
@@ -22,7 +22,7 @@ function LoginPage() {
         defaultValues: {
             email: "",
             password: "",
-            remember: true,
+            remember: false,
         },
         validators: {
             onSubmit: schema,
@@ -38,7 +38,7 @@ function LoginPage() {
                 onSubmit={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
-                    void form.handleSubmit();
+                    form.handleSubmit();
                 }}
                 className="space-y-4"
             >
@@ -52,7 +52,9 @@ function LoginPage() {
                             onBlur={field.handleBlur}
                             onChange={(e) => field.handleChange(e.target.value)}
                             error={field.state.meta.errors?.[0]?.toString()}
-                        />
+                        >
+                            電子信箱
+                        </AuthInput>
                     )}
                 />
                 <form.Field
@@ -66,7 +68,9 @@ function LoginPage() {
                             onBlur={field.handleBlur}
                             onChange={(e) => field.handleChange(e.target.value)}
                             error={field.state.meta.errors?.[0]?.toString()}
-                        />
+                        >
+                            密碼
+                        </AuthInput>
                     )}
                 />
                 <form.Field
