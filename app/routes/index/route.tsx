@@ -3,6 +3,7 @@ import Hero from "./@components/Hero";
 import LatestNews from "./@components/LatestNews";
 import About from "./@components/About";
 import Footer from "./@components/Footer";
+import MostPopular from "./@components/MostPopular";
 
 export const Route = createFileRoute("/")({
     component: HomePage,
@@ -14,6 +15,7 @@ function HomePage() {
             <Hero />
             <LatestNews />
             <About />
+            <MostPopular />
             <Footer />
         </>
     );

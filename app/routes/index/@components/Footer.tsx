@@ -1,25 +1,7 @@
 import Facebook from "@/assets/icons/facebook.svg?react";
 import Instagram from "@/assets/icons/instagram.svg?react";
 import Whatsapp from "@/assets/icons/whatsapp.svg?react";
-
-const CONTACT_LIST = [
-    {
-        title: "TEL",
-        text: "+886-7-1234567",
-    },
-    {
-        title: "FAX",
-        text: "+886-7-1234567",
-    },
-    {
-        title: "MAIL",
-        text: "elh@hexschool.com",
-    },
-    {
-        title: "WEB",
-        text: "www.elhhexschool.com.tw",
-    },
-];
+import { CONTACT_LIST } from "../@constants";
 
 const Footer = () => {
     return (
