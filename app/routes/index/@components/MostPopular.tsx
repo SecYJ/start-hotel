@@ -6,9 +6,12 @@ const MostPopular = () => {
     const [emblaRef] = useEmblaCarousel(
         {
             loop: true,
-            // slides: MOST_POPULAR_LIST.length,
         },
-        [Autoplay()],
+        [
+            Autoplay({
+                stopOnInteraction: false,
+            }),
+        ],
     );
 
     return (
